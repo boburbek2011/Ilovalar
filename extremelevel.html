@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html lang="uz">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neon Click Challenge - Extreme Level</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        .container {
+            text-align: center;
+            padding: 15px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #ff0000,
+                0 0 40px #ff0000,
+                0 0 80px #ff0000;
+            animation: neonPulse 1s infinite alternate;
+        }
+
+        @keyframes neonPulse {
+            from {
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 20px #ff0000,
+                    0 0 40px #ff0000,
+                    0 0 80px #ff0000;
+            }
+            to {
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 20px #ff0000,
+                    0 0 40px #ff0000,
+                    0 0 80px #ff0000,
+                    0 0 90px #ff0000;
+            }
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            flex-wrap: wrap;
+        }
+
+        .info-box {
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            margin: 5px;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        #game-area {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                inset 0 0 20px rgba(255, 0, 0, 0.3),
+                0 0 30px rgba(255, 0, 0, 0.3);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .target {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            touch-action: manipulation;
+        }
+
+        .target:active {
+            transform: scale(1.1);
+        }
+
+        .circle {
+            border-radius: 50%;
+        }
+
+        .square {
+            border-radius: 10px;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            background: transparent !important;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 50px solid;
+        }
+
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            text-shadow: 
+                0 0 10px #fff,
+                0 0 20px #ff0000,
+                0 0 40px #ff0000;
+            opacity: 0;
+            transition: opacity 0.5s;
+            text-align: center;
+            width: 90%;
+        }
+
+        .visible {
+            opacity: 1;
+        }
+
+        .back-btn {
+            background: linear-gradient(45deg, #ff00de, #ff0000) !important;
+            box-shadow: 0 0 15px rgba(255, 0, 222, 0.7) !important;
+            margin-top: 10px;
+        }
+
+        /* Mobil qurilmalar uchun qo'shimcha stil */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .game-info {
+                flex-direction: column;
+            }
+            
+            #game-area {
+                height: 300px;
+            }
+            
+            button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .message {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<h1>Extreme Level</h1>
+<div class="game-info">
+<div class="info-box">
+<h3>Ball: <span id="score">0</span></h3>
+</div>
+<div class="info-box">
+<h3>Vaqt: <span id="timer">40</span>s</h3>
+</div>
+<div class="info-box">
+<h3>Daraja: <span id="level">1</span></h3>
+</div>
+</div>
+<div id="game-area">
+<div class="message" id="message"></div>
+</div>
+<div class="controls">
+<button id="start-btn">O'yinni Boshlash</button>
+<button disabled="" id="reset-btn">Qayta Boshlash</button>
+</div>
+<button class="back-btn" onclick="goBack()">Asosiy Menyuga Qaytish</button>
+</div>
+<script>
+        // O'yin o'zgaruvchilari - Extreme Level
+        let score = 0;
+        let timeLeft = 40; // 40 soniya
+        let level = 1;
+        let gameActive = false;
+        let timerInterval;
+        let targetInterval;
+        let targetSpeed = 500; // ms - shakllar paydo bo'lish tezligi
+        
+        // DOM elementlari
+        const gameArea = document.getElementById('game-area');
+        const scoreElement = document.getElementById('score');
+        const timerElement = document.getElementById('timer');
+        const levelElement = document.getElementById('level');
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const messageElement = document.getElementById('message');
+        
+        // Neon ranglari
+        const neonColors = [
+            { color: '#ff0000', shadow: '0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 40px #ff0000' },
+            { color: '#cc0000', shadow: '0 0 10px #cc0000, 0 0 20px #cc0000, 0 0 40px #cc0000' },
+            { color: '#990000', shadow: '0 0 10px #990000, 0 0 20px #990000, 0 0 40px #990000' },
+            { color: '#ff3333', shadow: '0 0 10px #ff3333, 0 0 20px #ff3333, 0 0 40px #ff3333' },
+            { color: '#ff6666', shadow: '0 0 10px #ff6666, 0 0 20px #ff6666, 0 0 40px #ff6666' }
+        ];
+        
+        // Shakl turlari
+        const shapes = ['circle', 'square']; // Extreme levelda faqat 2 xil shakl
+        
+        // Tugmalarga event listener qo'shish
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', resetGame);
+        
+        // Asosiy menyuga qaytish
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+        
+        // O'yinni boshlash funksiyasi
+        function startGame() {
+            if (gameActive) return;
+            
+            gameActive = true;
+            startBtn.disabled = true;
+            resetBtn.disabled = false;
+            
+            // O'yin parametrlarini qayta o'rnatish
+            score = 0;
+            timeLeft = 40;
+            level = 1;
+            targetSpeed = 500;
+            
+            updateUI();
+            hideMessage();
+            
+            // Vaqtni hisoblash
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+            
+            // Shakllarni yaratish
+            targetInterval = setInterval(createTarget, targetSpeed);
+        }
+        
+        // O'yinni qayta boshlash funksiyasi
+        function resetGame() {
+            clearInterval(timerInterval);
+            clearInterval(targetInterval);
+            
+            // Barcha shakllarni olib tashlash
+            const targets = document.querySelectorAll('.target');
+            targets.forEach(target => target.remove());
+            
+            gameActive = false;
+            startBtn.disabled = false;
+            resetBtn.disabled = true;
+            
+            hideMessage();
+        }
+        
+        // Shakl yaratish funksiyasi
+        function createTarget() {
+            if (!gameActive) return;
+            
+            const target = document.createElement('div');
+            target.className = 'target';
+            
+            // Tasodifiy shakl tanlash
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            target.classList.add(shape);
+            
+            // Tasodifiy rang tanlash
+            const colorData = neonColors[Math.floor(Math.random() * neonColors.length)];
+            
+            // Shaklga qarab turli xil usullarda stil berish
+            if (shape === 'triangle') {
+                target.style.borderBottomColor = colorData.color;
+                target.style.filter = `drop-shadow(${colorData.shadow})`;
+            } else {
+                target.style.backgroundColor = colorData.color;
+                target.style.boxShadow = colorData.shadow;
+            }
+            
+            // Shakl o'lchami (Extreme levelda kichikroq)
+            const size = Math.floor(Math.random() * 25) + 30; // 30-55px
+            if (shape === 'triangle') {
+                target.style.borderLeft = `${size/2}px solid transparent`;
+                target.style.borderRight = `${size/2}px solid transparent`;
+                target.style.borderBottom = `${size}px solid`;
+            } else {
+                target.style.width = `${size}px`;
+                target.style.height = `${size}px`;
+            }
+            
+            // Tasodifiy joylashtirish
+            const maxX = gameArea.offsetWidth - size;
+            const maxY = gameArea.offsetHeight - size;
+            
+            const posX = Math.floor(Math.random() * maxX);
+            const posY = Math.floor(Math.random() * maxY);
+            
+            target.style.left = `${posX}px`;
+            target.style.top = `${posY}px`;
+            
+            // Shaklga bosilganda
+            target.addEventListener('click', function() {
+                if (!gameActive) return;
+                
+                // Ball qo'shish
+                score += 10;
+                
+                // Shaklni olib tashlash
+                target.remove();
+                
+                // Daraja tekshirish
+                if (score >= level * 100) {
+                    levelUp();
+                }
+                
+                updateUI();
+                
+                // "Click" animatsiyasi
+                createClickEffect(target);
+            });
+            
+            // Shaklni o'z-o'zidan olib tashlash (Extreme levelda juda kam vaqt)
+            setTimeout(() => {
+                if (target.parentNode) {
+                    target.remove();
+                }
+            }, 800);
+            
+            gameArea.appendChild(target);
+        }
+        
+        // Daraja oshirish funksiyasi
+        function levelUp() {
+            level++;
+            
+            // Shakllar tezroq paydo bo'ladi (Extreme levelda juda tez tezlashadi)
+            clearInterval(targetInterval);
+            targetSpeed = Math.max(200, targetSpeed - 100); // Eng kam 200ms
+            targetInterval = setInterval(createTarget, targetSpeed);
+            
+            // Daraja oshganini bildirish
+            showMessage(`Daraja ${level}!`);
+        }
+        
+        // O'yinni tugatish funksiyasi
+        function endGame() {
+            gameActive = false;
+            clearInterval(timerInterval);
+            clearInterval(targetInterval);
+            
+            // Barcha shakllarni olib tashlash
+            const targets = document.querySelectorAll('.target');
+            targets.forEach(target => target.remove());
+            
+            startBtn.disabled = false;
+            
+            showMessage(`O'yin Tugadi! Siz ${score} ball to'pladingiz!`);
+        }
+        
+        // UI ni yangilash funksiyasi
+        function updateUI() {
+            scoreElement.textContent = score;
+            levelElement.textContent = level;
+            timerElement.textContent = timeLeft;
+        }
+        
+        // Xabar ko'rsatish funksiyasi
+        function showMessage(text) {
+            messageElement.textContent = text;
+            messageElement.classList.add('visible');
+            
+            setTimeout(() => {
+                messageElement.classList.remove('visible');
+            }, 2000);
+        }
+        
+        // Xabarni yashirish funksiyasi
+        function hideMessage() {
+            messageElement.textContent = '';
+            messageElement.classList.remove('visible');
+        }
+        
+        // Click effektini yaratish funksiyasi
+        function createClickEffect(target) {
+            const clickEffect = document.createElement('div');
+            clickEffect.style.position = 'absolute';
+            clickEffect.style.left = target.style.left;
+            clickEffect.style.top = target.style.top;
+            clickEffect.style.width = target.style.width;
+            clickEffect.style.height = target.style.height;
+            clickEffect.style.borderRadius = target.style.borderRadius;
+            clickEffect.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+            clickEffect.style.boxShadow = '0 0 20px 10px rgba(255, 255, 255, 0.7)';
+            clickEffect.style.pointerEvents = 'none';
+            gameArea.appendChild(clickEffect);
+            
+            setTimeout(() => {
+                clickEffect.remove();
+            }, 200);
+        }
+    </script>
+<button onclick="window.location.href='game.html'" style="position:fixed;bottom:20px;left:20px;padding:10px 20px;background:#0ff;border:none;color:#000;font-weight:bold;border-radius:10px;cursor:pointer;box-shadow:0 0 10px #0ff;z-index:9999;">Asosiy menyuga qaytish</button></body>
+</html>

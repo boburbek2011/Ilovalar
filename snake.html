@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Neon Snake – Big Buttons</title>
+<meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport"/>
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden;touch-action:none}
+  canvas{display:block;background:#000;margin:auto}
+  #hud{position:fixed;top:6px;left:6px;color:#0ff;font:20px monospace}
+  #pad{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:grid;
+       grid-template-columns:80px 80px 80px;gap:15px;justify-items:center}
+  .btn{width:60px;height:60px;border-radius:12px;font:30px/60px sans-serif;
+       text-align:center;background:#fff3;border:2px solid currentColor;
+       user-select:none}
+  #up{grid-column:2}#left{grid-column:1}#right{grid-column:3}#down{grid-column:2}
+</style>
+</head>
+<body>
+<div id="hud">Score: 0</div>
+<canvas id="c"></canvas>
+<div id="pad">
+<div class="btn" id="up" style="color:#0ff">▲</div>
+<div class="btn" id="left" style="color:#ff0">◀</div>
+<div class="btn" id="right" style="color:#ff0">▶</div>
+<div class="btn" id="down" style="color:#0ff">▼</div>
+</div>
+<script>
+const c=document.getElementById('c');
+const ctx=c.getContext('2d');
+const hud=document.getElementById('hud');
+function resize(){c.width=innerWidth;c.height=innerHeight;}
+addEventListener('resize',resize);resize();
+
+const grid=20;
+const cols=Math.floor(c.width/grid),rows=Math.floor(c.height/grid);
+
+let snake=[{x:Math.floor(cols/2),y:Math.floor(rows/2)}];
+let dx=1,dy=0,apple={x:rand(0,cols-1),y:rand(0,rows-1)},score=0,running=true;
+
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function placeApple(){
+  do{apple={x:rand(0,cols-1),y:rand(0,rows-1)};}
+  while(snake.some(s=>s.x===apple.x&&s.y===apple.y));
+}
+function drawCell(x,y,color,glow=0){
+  ctx.fillStyle=color;
+  ctx.shadowBlur=glow;
+  ctx.shadowColor=color;
+  ctx.fillRect(x*grid,y*grid,grid-1,grid-1);
+  ctx.shadowBlur=0;
+}
+function step(){
+  if(!running)return;
+  const head={x:snake[0].x+dx,y:snake[0].y+dy};
+  if(head.x<0||head.x>=cols||head.y<0||head.y>=rows||snake.some(s=>s.x===head.x&&s.y===head.y)){
+    running=false;return;
+  }
+  snake.unshift(head);
+  if(head.x===apple.x&&head.y===apple.y){
+    score++;hud.textContent='Score: '+score;placeApple();
+  }else snake.pop();
+}
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  drawCell(apple.x,apple.y,'#f0f',15);
+  snake.forEach((s,i)=>drawCell(s.x,s.y,i===0?'#0ff':'#088',i===0?20:8));
+  if(!running){
+    ctx.fillStyle='#fff';
+    ctx.font='30px monospace';
+    ctx.textAlign='center';
+    ctx.fillText('GAME OVER',c.width/2,c.height/2-20);
+    ctx.font='16px monospace';
+    ctx.fillText('Tap here to restart',c.width/2,c.height/2+15);
+  }
+}
+setInterval(()=>{step();draw();},100);
+
+// big-button controls
+function setDir(nx,ny){if(-nx!==dx||-ny!==dy){dx=nx;dy=ny;}}
+['up','down','left','right'].forEach(id=>{
+  const el=document.getElementById(id);
+  const handler=e=>{e.preventDefault();
+    switch(id){
+      case 'up':setDir(0,-1);break;
+      case 'down':setDir(0,1);break;
+      case 'left':setDir(-1,0);break;
+      case 'right':setDir(1,0);break;
+    }
+  };
+  el.addEventListener('mousedown',handler);
+  el.addEventListener('touchstart',handler);
+});
+
+// restart
+c.addEventListener('mousedown',()=>{if(!running)restart();});
+c.addEventListener('touchstart',()=>{if(!running)restart();});
+function restart(){
+  snake=[{x:Math.floor(cols/2),y:Math.floor(rows/2)}];
+  dx=1;dy=0;score=0;hud.textContent='Score: 0';placeApple();running=true;
+}
+</script>
+<button onclick="window.location.href='game.html'" style="position:fixed;bottom:20px;left:20px;padding:10px 20px;background:#0ff;border:none;color:#000;font-weight:bold;border-radius:10px;cursor:pointer;box-shadow:0 0 10px #0ff;z-index:9999;">Asosiy menyuga qaytish</button></body>
+</html>
