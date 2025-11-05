@@ -1,9 +1,15 @@
 {
-    "name": "Neon Music Player",
-    "short_name": "MusicApp",
-    "start_url": "index.html",
-    "display": "standalone",
-    "background_color": "#000000",
-    "theme_color": "#00ffff",
-    "icons": []
+  "name": "Ilovalar markazi",
+  "short_name": "Ilovalar",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2196f3",
+  "icons": [
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
