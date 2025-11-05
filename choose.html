@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qurilma tanlang</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #6dd5ed, #2193b0);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      margin-top: 40px;
+      font-size: 24px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 60px;
+      flex-wrap: wrap;
+    }
+    .device {
+      background: white;
+      color: #333;
+      border-radius: 15px;
+      padding: 20px;
+      width: 140px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .device:hover {
+      transform: scale(1.05);
+      background: #f0f0f0;
+    }
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Siz qaysi qurilmadan foydalanayapsiz?</h2>
+  <div class="buttons">
+    <div class="device" onclick="location.href='game.html'">
+      <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4f1.svg" alt="Telefon">
+      <p>Telefon</p>
+    </div>
+    <div class="device" onclick="location.href='komp.html'">
+      <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4bb.svg" alt="Kompyuter">
+      <p>Kompyuter</p>
+    </div>
+  </div>
+</body>
+</html>

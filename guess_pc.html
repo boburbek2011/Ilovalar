@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guess The Word (PC)</title>
+<style>
+body{margin:0;font-family:Arial;background:#071024;color:#e6eef8;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+header{padding:16px;text-align:center}
+.container{width:700px;max-width:96%;padding:12px}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.btn{background:#0b1220;color:#e6eef8;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+.word{letter-spacing:8px;font-size:32px;margin:12px 0}
+.letters{display:flex;flex-wrap:wrap;gap:6px}
+.letter{width:40px;height:40px;border-radius:6px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;font-weight:600}
+.status{color:#9fb3cf;margin-top:8px}
+</style>
+</head>
+<body>
+<header><h1>Guess The Word — Kompyuter</h1><p style="color:#9fb3cf">Klaviatura orqali harflarni tering. Esc — menyuga qaytish.</p></header>
+<div class="container">
+  <div class="controls">
+    <div><button class="btn" id="back">⬅ Menyuga</button> <button class="btn" id="new">Yangi so'z</button></div>
+    <div class="status">Xato: <span id="wrong">0</span>/<span id="max">7</span> | Best (min xato): <span id="best">-</span></div>
+  </div>
+  <div class="word" id="slot">_ _ _ _</div>
+  <div>Terilganlar:</div>
+  <div id="typed" class="letters" style="margin-top:8px"></div>
+</div>
+<script>
+const words = ['olma','daryo','kitob','kompyuter','sarlavha','maktab','oila','dunyo','ilm','texnika'];
+let secret='', revealed=[], guessed=new Set(), wrong=0, maxWrong=7;
+const slot = document.getElementById('slot'), typed = document.getElementById('typed'), wrongEl = document.getElementById('wrong'), maxEl = document.getElementById('max');
+maxEl.textContent = maxWrong;
+function loadGuessScores(){ const b = localStorage.getItem('guess_best'); if(b) document.getElementById('best').textContent = b; }
+function saveGuess(){ const b = parseInt(localStorage.getItem('guess_best')||'999',10); if(wrong < b){ localStorage.setItem('guess_best', wrong); document.getElementById('best').textContent = wrong; } localStorage.setItem('guess_last_wrong', wrong); }
+function newWord(){ secret = words[Math.floor(Math.random()*words.length)].toUpperCase(); revealed = Array(secret.length).fill('_'); guessed = new Set(); wrong=0; render(); }
+
+function render(){ slot.textContent = revealed.join(' '); wrongEl.textContent = wrong; typed.innerHTML=''; guessed.forEach(ch=>{ const d = document.createElement('div'); d.className='letter'; d.textContent = ch; typed.appendChild(d); }); }
+document.getElementById('new').addEventListener('click', newWord);
+document.getElementById('back').addEventListener('click', ()=> location.href='komp.html');
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') location.href='komp.html';
+  const k = e.key.toUpperCase();
+  if(k.length===1 && k>='A' && k<='Z'){
+    if(guessed.has(k)) return;
+    guessed.add(k);
+    if(secret.includes(k)){
+      for(let i=0;i<secret.length;i++) if(secret[i]===k) revealed[i]=k;
+    } else wrong++;
+    if(revealed.join('')===secret){ setTimeout(()=>{ alert('Tabrik!'); saveGuess(); },50); }
+    if(wrong>=maxWrong){ setTimeout(()=>{ alert('Yo‘qotdingiz. To‘g‘ri so‘z: '+secret); saveGuess(); },50); }
+    render();
+  }
+});
+loadGuessScores(); newWord();
+</script>
+</body>
+</html>

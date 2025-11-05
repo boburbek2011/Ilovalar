@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+<html lang="uz">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>O'yinlar Portali - Neon Games</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            padding: 10px;
+        }
+ .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#fff2,#fff0);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--bg2);box-shadow:0 6px 18px #0008}
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #ff00de,
+                0 0 40px #ff00de;
+            animation: neonPulse 2s infinite alternate;
+        }
+
+        @keyframes neonPulse {
+            from {
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 20px #ff00de,
+                    0 0 40px #ff00de;
+            }
+            to {
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 20px #ff00de,
+                    0 0 40px #ff00de,
+                    0 0 50px #ff00de;
+            }
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .game-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 222, 0.3);
+            border-color: #ff00de;
+        }
+
+        .game-image {
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(45deg, #ff00de, #00c3ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .game-info {
+            padding: 8px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #ff00de;
+            line-height: 1.2;
+        }
+
+        .game-description {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+            line-height: 1.2;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .play-btn {
+            display: block;
+            width: 100%;
+            padding: 6px;
+            background: linear-gradient(45deg, #ff00de, #00c3ff);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 8px rgba(255, 0, 222, 0.7);
+        }
+
+        .coming-soon {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            grid-column: 1 / -1;
+            min-height: 120px;
+        }
+
+        .coming-soon .game-image {
+            background: linear-gradient(45deg, #666, #999);
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            margin-bottom: 8px;
+        }
+
+        .coming-soon-text {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Kichik telefonlar uchun optimallashtirish */
+        @media (max-width: 320px) {
+            .games-grid {
+                gap: 6px;
+            }
+            
+            .game-image {
+                height: 70px;
+                font-size: 1.6rem;
+            }
+            
+            .game-info {
+                padding: 6px;
+            }
+            
+            .game-title {
+                font-size: 0.85rem;
+            }
+            
+            .game-description {
+                font-size: 0.65rem;
+            }
+        }
+
+        /* Katta telefonlar va planshetlar uchun */
+        @media (min-width: 480px) {
+            .games-grid {
+                gap: 12px;
+            }
+            
+            .game-image {
+                height: 90px;
+                font-size: 2rem;
+            }
+            
+            .game-info {
+                padding: 10px;
+            }
+            
+            .game-title {
+                font-size: 1rem;
+            }
+            
+            .game-description {
+                font-size: 0.75rem;
+            }
+            
+            .play-btn {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Planshetlar va kichik noutbuklar */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+            }
+            
+            .games-grid {
+                gap: 15px;
+            }
+            
+            .game-image {
+                height: 100px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        /* Katta ekranlar */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 900px;
+            }
+            
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .game-image {
+                height: 120px;
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Portret rejimda ham 2 qator saqlash */
+        @media (orientation: portrait) {
+            .games-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Landskap rejimda 3 qator */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .games-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .coming-soon {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
+</head>
+<body>
+        
+<div class="container">
+<header>
+<h1>Neon O'yinlar</h1>
+<p class="subtitle">Qiziqarli neon o'yinlar to'plami</p>
+</header>
+<div class="games-grid">
+<!-- 1-QATOR -->
+<div class="game-card" onclick="openGame('neon.html')">
+<div class="game-image">🎯</div>
+<div class="game-info">
+<h3 class="game-title">Neon Click</h3>
+<p class="game-description">Shakllarni tez bosing</p>
+<div class="game-stats">
+<span>⭐ 4.8</span>
+<span>🎮 3</span>
+<span>⏱ 30s</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<div class="game-card" onclick="openGame('snake.html')">
+<div class="game-image">🐍</div>
+<div class="game-info">
+<h3 class="game-title">Neon Snake</h3>
+<p class="game-description">Ilonni boshqaring</p>
+<div class="game-stats">
+<span>⭐ 4.5</span>
+<span>🎮 1</span>
+<span>⏱ ∞</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<!-- 2-QATOR -->
+<div class="game-card" onclick="openGame('pixel art.html')">
+<div class="game-image">🎨</div>
+<div class="game-info">
+<h3 class="game-title">Pixel Art</h3>
+<p class="game-description">Rasm chizing</p>
+<div class="game-stats">
+<span>⭐ 4.8</span>
+<span>🎮 3</span>
+<span>⏱ ∞s</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<div class="game-card" onclick="openGame('Guess the word.html')">
+<div class="game-image">💡</div>
+<div class="game-info">
+<h3 class="game-title">So'z topish oyini(inglizcha)</h3>
+<p class="game-description">sozni toping</p>
+<div class="game-stats">
+<span>⭐ 4.5</span>
+<span>🎮 1</span>
+<span>⏱ ∞</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<div class="game-card" onclick="openGame('car.html')">
+<div class="game-image">🚗</div>
+<div class="game-info">
+<h3 class="game-title">2d mashina oʻyin</h3>
+<p class="game-description">Mashinani boshqaring</p>
+<div class="game-stats">
+<span>⭐ 2.8</span>
+<span>🎮 5</span>
+<span>⏱ ∞s</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<div class="game-card" onclick="openGame('https://rosebud.ai/p/a504ac93-52b6-42dc-a735-fe54f826c4ec')">
+<div class="game-image">🦘</div>
+<div class="game-info">
+<h3 class="game-title">Mario</h3>
+<p class="game-description">Tangalarni yigʻing</p>
+<div class="game-stats">
+<span>⭐ 4.5</span>
+<span>🎮 1</span>
+<span>⏱ ∞</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<div class="game-card" onclick="openGame('https://allwebgames.com/g/288720#app-id=288720&catalog-session-uid=catalog-2bf43c5c-ce2d-51cc-9c02-065ce157bd43-1762353523373-6f31&rtx-reqid=12406337168548600662&redir-data=%7B%22block%22%3A%22suggested%22%2C%22block_index%22%3A1%2C%22card%22%3A%22s%22%2C%22col%22%3A0%2C%22first_screen%22%3A1%2C%22listType%22%3A%22suggested%22%2C%22page%22%3A%22main%22%2C%22request_id%22%3A%221762353523005115-2504386181874088627-arhf2olmjktkuc3e-BAL%22%2C%22row%22%3A2%2C%22rtx_reqid%22%3A%2212406337168548600662%22%2C%22same_block_index%22%3A0%2C%22wrapper%22%3A%22grid-list%22%2C%22games_request_id%22%3A%221762353522990144-10136365104878269920-qabnaniw5okpjppu-BAL%22%2C%22http_ref%22%3A%22https%253A%252F%252Fallwebgames.com%252F%22%2C%22rn%22%3A398971809%7D')">
+<div class="game-image">🏎️</div>
+<div class="game-info">
+<h3 class="game-title">Super car 3d </h3>
+<p class="game-description">Tangalarni yigʻing</p>
+<div class="game-stats">
+<span>⭐ 4.5</span>
+<span>🎮8</span>
+<span>⏱ ∞</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<div class="game-card" onclick="openGame('https://allwebgames.com/g/288074#app-id=288074&catalog-session-uid=catalog-2bf43c5c-ce2d-51cc-9c02-065ce157bd43-1762353457002-6e13&rtx-reqid=1545235031902468837&redir-data=%7B%22block%22%3A%22suggested%22%2C%22block_index%22%3A0%2C%22card%22%3A%22s%22%2C%22col%22%3A0%2C%22first_screen%22%3A1%2C%22listType%22%3A%22suggested%22%2C%22page%22%3A%22main%22%2C%22request_id%22%3A%221762353456618375-5039840352993151821-lxhwgumgg6wio6r6-BAL%22%2C%22row%22%3A1%2C%22rtx_reqid%22%3A%221545235031902468837%22%2C%22same_block_index%22%3A0%2C%22wrapper%22%3A%22grid-list%22%2C%22games_request_id%22%3A%221762353456592161-4974161693830368271-dwik6orlcgi3nizd-BAL%22%2C%22http_ref%22%3A%22https%253A%252F%252Fallwebgames.com%252F%22%2C%22rn%22%3A567636868%7D')">
+<div class="game-image">➡️</div>
+<div class="game-info">
+<h3 class="game-title">Geometry volna</h3>
+<p class="game-description">Buyumlraga toʻqnashmang</p>
+<div class="game-stats">
+<span>⭐ 2.8</span>
+<span>🎮 5</span>
+<span>⏱ ∞s</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<div class="game-card" onclick="openGame('https://allwebgames.com/')">
+<div class="game-image">🌐</div>
+<div class="game-info">
+<h3 class="game-title">Boshqa oʻyinlar</h3>
+<p class="game-description">Sinab koʻring</p>
+<div class="game-stats">
+<span>⭐ 2.8</span>
+<span>🎮 5</span>
+<span>⏱ ∞s</span>
+</div>
+<button class="play-btn">O'ynash</button>
+</div>
+</div>
+<footer>
+<p style="font-size: 0.8rem;">Neon O'yinlar Portali</p>
+</footer>
+</div>
+<script>
+        function openGame(gameUrl) {
+            window.location.href = gameUrl;
+        }
+        
+        // Agar o'yin kartasining istalgan qismiga bosilsa, o'yin ochiladi
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Coming Soon kartasiga bosilganda hech narsa qilmaymiz
+                if (this.classList.contains('coming-soon')) return;
+                
+                // Kartadagi tugma matniga qarab o'yin URL ni aniqlaymiz
+                const gameTitle = this.querySelector('.game-title').textContent;
+                let gameUrl = '';
+                
+                if (gameTitle.includes('Click')) {
+                    gameUrl = 'neon.html';
+                } else if (gameTitle.includes('Snake')) {
+                    gameUrl = 'snake.html';
+                } else if (gameTitle.includes('Tetris')) {
+                    gameUrl = '';
+                } else if (gameTitle.includes('So\'z')) {
+                    gameUrl = '';
+                }
+                
+                if (gameUrl) {
+                    window.location.href = gameUrl;
+                }
+            });
+        });
+
+        // Telefon o'lchamiga qarab dinamik sozlamalar
+        function adjustLayout() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const isPortrait = screenHeight > screenWidth;
+            
+            // Kichik ekranlarda font o'lchamlarini moslashtirish
+            if (screenWidth < 360) {
+                document.documentElement.style.fontSize = '14px';
+            } else {
+                document.documentElement.style.fontSize = '16px';
+            }
+        }
+
+        // Dastlabki sozlash
+        adjustLayout();
+        
+        // Ekran o'lchami o'zgarganda sozlash
+        window.addEventListener('resize', adjustLayout);
+        window.addEventListener('orientationchange', adjustLayout);
+    </script>
+<button onclick="window.location.href='index.html'" style="position:fixed;bottom:20px;left:20px;padding:10px 20px;background:#0ff;border:none;color:#000;font-weight:bold;border-radius:10px;cursor:pointer;box-shadow:0 0 10px #0ff;z-index:9999;">Ilovalar markaziga qaytish</button></body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang='uz'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Kalkulyator</title>
+<style>
+  body{margin:0;font-family:'Poppins',sans-serif;background:radial-gradient(circle at top left,#0ff,#006);color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh}
+  .back-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #222;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+  z-index: 1000;
+}
+.back-button:hover {
+  background-color: #444;
+} 
+  .calc{background:#111;border-radius:20px;padding:20px;box-shadow:0 0 30px #0ff}
+  .display{width:220px;height:50px;background:#000;color:#0ff;font-size:1.6em;text-align:right;padding:10px;border:none;border-radius:10px;box-shadow:inset 0 0 10px #0ff;margin-bottom:15px}
+  .buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  button{font-size:1.2em;padding:15px;border:none;border-radius:10px;background:#111;color:white;box-shadow:0 0 10px #0ff;cursor:pointer;transition:all .2s}
+  button:hover{box-shadow:0 0 20px #0ff;transform:scale(1.1)}
+</style>
+</head>
+<body>
+<div class='calc'>
+<input class='display' id='display' readonly>
+<div class='buttons'>
+  <button onclick='clearDisplay()'>C</button>
+  <button onclick='appendValue("/")'>÷</button>
+  <button onclick='appendValue("*")'>×</button>
+  <button onclick='delChar()'>⌫</button>
+  <button onclick='appendValue("7")'>7</button>
+  <button onclick='appendValue("8")'>8</button>
+  <button onclick='appendValue("9")'>9</button>
+  <button onclick='appendValue("-")'>−</button>
+  <button onclick='appendValue("4")'>4</button>
+  <button onclick='appendValue("5")'>5</button>
+  <button onclick='appendValue("6")'>6</button>
+  <button onclick='appendValue("+")'>+</button>
+  <button onclick='appendValue("1")'>1</button>
+  <button onclick='appendValue("2")'>2</button>
+  <button onclick='appendValue("3")'>3</button>
+  <button onclick='calculate()'>=</button>
+  <button onclick='appendValue("0")'>0</button>
+  <button onclick='appendValue(".")'>.</button>
+</div>
+</div>
+<a href="index.html" class="back-button">← Asosiy menyu</a>
+<script>
+function appendValue(val){document.getElementById('display').value+=val}
+function clearDisplay(){document.getElementById('display').value=''}
+function delChar(){let d=document.getElementById('display');d.value=d.value.slice(0,-1)}
+function calculate(){try{let r=eval(document.getElementById('display').value);document.getElementById('display').value=r}catch(e){document.getElementById('display').value='Error'}}
+</script>
+</body>
+</html>

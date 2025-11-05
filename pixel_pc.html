@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pixel Art (PC)</title>
+<style>
+body{margin:0;font-family:Arial;background:#071024;color:#e6eef8;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+header{padding:16px;text-align:center}
+.container{width:1000px;max-width:96%;padding:12px}
+.controls{display:flex;justify-content:space-between;margin-bottom:8px}
+.btn{background:#0b1220;color:#e6eef8;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+.pixel-grid{display:grid;grid-template-columns:repeat(32,14px);gap:1px;background:#0a0b0f;padding:8px;border-radius:8px;overflow:auto}
+.pixel{width:14px;height:14px;background:#111}
+.pixel.active{background:#7c3aed}
+.status{margin-top:8px;color:#9fb3cf}
+</style>
+</head>
+<body>
+<header><h1>Pixel Art Editor — Kompyuter</h1><p style="color:#9fb3cf">Arrow/WASD — kursor, Space — bo'yash, C — tozalash, Esc — menyu.</p></header>
+<div class="container">
+  <div class="controls">
+    <div><button class="btn" id="back">⬅ Menyuga</button> <button class="btn" id="clear">Tozalash</button> <button class="btn" id="export">PNG ga eksport</button></div>
+    <div class="status">Kursor: (<span id="x">0</span>,<span id="y">0</span>) Rang: <span id="col">#7c3aed</span> | Saved: <span id="saved">0</span></div>
+  </div>
+  <div id="grid" class="pixel-grid" style="width:calc(14px*32 + 31px);"></div>
+</div>
+<script>
+const gridEl = document.getElementById('grid');
+let W = 32, H = 32;
+let cursor = {x:0,y:0}, pixels = Array(32*32).fill(0);
+function render(){
+  gridEl.innerHTML='';
+  for(let y=0;y<H;y++){
+    for(let x=0;x<W;x++){
+      const idx = y*W + x;
+      const div = document.createElement('div');
+      div.className='pixel' + (pixels[idx] ? ' active' : '');
+      if(cursor.x===x && cursor.y===y) div.style.outline='2px solid rgba(255,255,255,0.08)';
+      gridEl.appendChild(div);
+    }
+  }
+  document.getElementById('x').textContent = cursor.x;
+  document.getElementById('y').textContent = cursor.y;
+}
+function toggle(){ const idx = cursor.y*W + cursor.x; pixels[idx] = pixels[idx] ? 0 : 1; const prev = localStorage.getItem('pixel_last'); if(prev){ try{ pixels = JSON.parse(prev); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count')||0; }catch(e){} } render(); }
+function savePixelState(){ try{ const data = JSON.stringify(pixels); localStorage.setItem('pixel_last', data); localStorage.setItem('pixel_saved_count', (parseInt(localStorage.getItem('pixel_saved_count')||'0',10)+1)); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count'); }catch(e){} }
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') location.href='komp.html';
+  if(['ArrowLeft','a','A'].includes(e.key)){ cursor.x = Math.max(0,cursor.x-1); const prev = localStorage.getItem('pixel_last'); if(prev){ try{ pixels = JSON.parse(prev); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count')||0; }catch(e){} } render(); }
+  if(['ArrowRight','d','D'].includes(e.key)){ cursor.x = Math.min(W-1,cursor.x+1); const prev = localStorage.getItem('pixel_last'); if(prev){ try{ pixels = JSON.parse(prev); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count')||0; }catch(e){} } render(); }
+  if(['ArrowUp','w','W'].includes(e.key)){ cursor.y = Math.max(0,cursor.y-1); const prev = localStorage.getItem('pixel_last'); if(prev){ try{ pixels = JSON.parse(prev); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count')||0; }catch(e){} } render(); }
+  if(['ArrowDown','s','S'].includes(e.key)){ cursor.y = Math.min(H-1,cursor.y+1); const prev = localStorage.getItem('pixel_last'); if(prev){ try{ pixels = JSON.parse(prev); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count')||0; }catch(e){} } render(); }
+  if(e.key===' '){ e.preventDefault(); toggle(); }
+  if(e.key==='c' || e.key==='C'){ pixels = Array(W*H).fill(0); const prev = localStorage.getItem('pixel_last'); if(prev){ try{ pixels = JSON.parse(prev); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count')||0; }catch(e){} } render(); }
+});
+document.getElementById('back').addEventListener('click', ()=> location.href='komp.html');
+document.getElementById('clear').addEventListener('click', ()=> { pixels = Array(W*H).fill(0); const prev = localStorage.getItem('pixel_last'); if(prev){ try{ pixels = JSON.parse(prev); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count')||0; }catch(e){} } render(); });
+document.getElementById('export').addEventListener('click', ()=>{ savePixelState(); 
+  const cvs = document.createElement('canvas'); cvs.width = W; cvs.height = H;
+  const ctx = cvs.getContext('2d');
+  for(let y=0;y<H;y++){ for(let x=0;x<W;x++){ ctx.fillStyle = pixels[y*W+x] ? '#7c3aed' : '#0b0b0b'; ctx.fillRect(x,y,1,1); } }
+  const data = cvs.toDataURL('image/png'); const a = document.createElement('a'); a.href=data; a.download='pixel-art.png'; a.click();
+});
+const prev = localStorage.getItem('pixel_last'); if(prev){ try{ pixels = JSON.parse(prev); document.getElementById('saved').textContent = localStorage.getItem('pixel_saved_count')||0; }catch(e){} } render();
+</script>
+</body>
+</html>

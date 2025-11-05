@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang='uz'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Taymer</title>
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:radial-gradient(circle at top right,#0ff,#00f);
+  color:white;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.back-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #222;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+  z-index: 1000;
+}
+.back-button:hover {
+  background-color: #444;
+} 
+input{
+  width:60px;
+  padding:10px;
+  font-size:1.2em;
+  border:none;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 0 15px #0ff;
+  background:#111;
+  color:#0ff;
+  margin:0 5px;
+}
+.controls button{
+  margin:10px;
+  padding:10px 20px;
+  font-size:1.2em;
+  border:none;
+  border-radius:10px;
+  background:#111;
+  color:white;
+  box-shadow:0 0 15px #0ff;
+  cursor:pointer;
+  transition:.2s;
+}
+.controls button:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 25px #0ff;
+}
+h1{
+  font-size:3em;
+  text-shadow:0 0 20px #0ff;
+}
+</style>
+</head>
+<body>
+<div>
+  <input type='number' id='min' placeholder='Min'>
+  <input type='number' id='sec' placeholder='Sec'>
+</div>
+<h1 id='display'>00:00</h1>
+<div class='controls'>
+  <button onclick='startTimer()'>Start</button>
+  <button onclick='stopTimer()'>Stop</button>
+  <button onclick='resetTimer()'>Reset</button>
+</div>
+<a href="index.html" class="back-button">← Asosiy menyu</a>
+
+<!-- Alarm ovozi -->
+<audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+
+<script>
+let interval;
+let total = 0;
+const alarm = document.getElementById('alarmSound');
+
+function updateDisplay() {
+  let m = Math.floor(total / 60),
+      s = total % 60;
+  document.getElementById('display').innerText = 
+      `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function startTimer() {
+  if (interval) return;
+  let m = parseInt(document.getElementById('min').value) || 0;
+  let s = parseInt(document.getElementById('sec').value) || 0;
+  if (total == 0) total = m * 60 + s;
+
+  interval = setInterval(() => {
+    if (total > 0) {
+      total--;
+      updateDisplay();
+    } else {
+      clearInterval(interval);
+      interval = null;
+      alarm.currentTime = 0;
+      alarm.play();  // Alarmni ijro etish
+      alert('Taymer tugadi!');
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(interval);
+  interval = null;
+}
+
+function resetTimer() {
+  stopTimer();
+  total = 0;
+  updateDisplay();
+  alarm.pause();
+  alarm.currentTime = 0;
+}
+
+updateDisplay();
+</script>
+</body>
+</html>

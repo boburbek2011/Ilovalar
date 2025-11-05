@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Car (PC)</title>
+<style>
+body{margin:0;font-family:Arial;background:#05060a;color:#e6eef8;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+header{padding:16px;text-align:center}
+.container{width:900px;max-width:96%;padding:12px}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.btn{background:#0b1220;color:#e6eef8;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+canvas{background:#111;border-radius:8px;width:100%;height:auto;display:block}
+.status{margin-top:8px;color:#9fb3cf}
+</style>
+</head>
+<body>
+<header><h1>Car — Kompyuter versiyasi</h1><p style="color:#9fb3cf">Arrow yoki A/D bilan boshqarish. R — qayta boshlash. Esc — menyuga qaytish.</p></header>
+<div class="container">
+  <div class="controls">
+    <div>
+      <button class="btn" id="back">⬅ Menyuga</button>
+      <button class="btn" id="restart">🔄 Qayta</button>
+    </div>
+    <div class="status">Score: <span id="score">0</span> | High Score: <span id="high">0</span></div>
+  </div>
+  <canvas id="c" width="800" height="450"></canvas>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W = canvas.width, H = canvas.height;
+let player = {x: W/2-20, y: H-100, w:40, h:60, speed:6};
+let playerImg = new Image(); playerImg.src='player-car.png';
+let enemyImg = new Image(); enemyImg.src='enemy-car.png';
+let obs = [], score=0, running=true;
+function loadScores(){ const hs = localStorage.getItem('car_highscore'); if(hs) document.getElementById('high').textContent = hs; const last = localStorage.getItem('car_lastscore'); if(last) document.getElementById('score').textContent = last; }
+function saveScores(){ const hs = parseInt(localStorage.getItem('car_highscore')||'0',10); if(score>hs){ localStorage.setItem('car_highscore', score); document.getElementById('high').textContent = score; } localStorage.setItem('car_lastscore', score); }
+function reset(){ obs=[]; score=0; running=true; player.x = W/2-20; document.getElementById('score').textContent=score; loop(); }
+
+function spawn(){
+  const w = 30+Math.random()*60;
+  const x = 80 + Math.random()*(W-160-w);
+  obs.push({x:x,y:-60,w:w,h:40,spd:2+Math.random()*2});
+}
+function loop(){
+  if(!running) return;
+  ctx.clearRect(0,0,W,H);
+  // road
+  ctx.fillStyle='#111'; ctx.fillRect(80,0,W-160,H);
+  ctx.fillStyle='#222'; ctx.fillRect(80,0,10,H); ctx.fillRect(W-90,0,10,H);
+  ctx.fillStyle='#fff'; for(let y=0;y<H;y+=40) ctx.fillRect(W/2-3,y,6,24);
+  // player (image)
+  if(playerImg.complete) ctx.drawImage(playerImg, player.x, player.y, player.w, player.h);
+  else { ctx.fillStyle='#00d1ff'; ctx.fillRect(player.x,player.y,player.w,player.h); }
+  // spawn
+  if(Math.random()<0.02+Math.min(0.08,score*0.0008)) spawn();
+  // obstacles
+  ctx.fillStyle='#ff4040';
+  for(let o of obs){ o.y += o.spd + score*0.01; if(enemyImg.complete) ctx.drawImage(enemyImg, o.x, o.y, o.w, o.h); else ctx.fillRect(o.x,o.y,o.w,o.h); }
+  // collision & cleanup
+  obs = obs.filter(o=>{
+    if(o.y>H){ score++; document.getElementById('score').textContent=score; return false; }
+    if(!(player.x+player.w < o.x || player.x > o.x+o.w || player.y+player.h < o.y || player.y > o.y+o.h)){
+      running=false; ctx.fillStyle='rgba(0,0,0,0.6)'; ctx.fillRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.font='20px Arial'; ctx.fillText('Game Over - R to restart', W/2-120, H/2);
+      return false;
+    }
+    return true;
+  });
+  requestAnimationFrame(loop);
+}
+let keys = {};
+document.addEventListener('keydown', e=>{ keys[e.key]=true; if(e.key==='r' || e.key==='R'){ loadScores(); reset(); window.addEventListener('beforeunload', ()=> saveScores()); } if(e.key==='Escape'){ location.href='komp.html'; } });
+document.addEventListener('keyup', e=>{ keys[e.key]=false; });
+setInterval(()=>{
+  if(running){
+    if(keys['ArrowLeft']||keys['a']||keys['A']) player.x -= player.speed;
+    if(keys['ArrowRight']||keys['d']||keys['D']) player.x += player.speed;
+    player.x = Math.max(85, Math.min(W-85-player.w, player.x));
+  }
+},16);
+document.getElementById('back').addEventListener('click', ()=>{ saveScores(); location.href='komp.html'; });
+document.getElementById('restart').addEventListener('click', ()=>{ saveScores(); loadScores(); reset(); window.addEventListener('beforeunload', ()=> saveScores()); });
+loadScores(); reset(); window.addEventListener('beforeunload', ()=> saveScores());
+</script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ilovalar markazi</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#0f172a;
+    --bg2:#1e3c72;
+    --card:#ffffff10;
+    --accent:#ffb86b;
+    --glass: rgba(255,255,255,0.06);
+  }
+  html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--bg2),var(--bg1));color:#fff}
+  .wrap{max-width:980px;margin:28px auto;padding:18px;display:flex;flex-direction:column;gap:18px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#fff2,#fff0);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--bg2);box-shadow:0 6px 18px #0008}
+  h1{font-size:20px;margin:0}
+  .subtitle{opacity:0.8;font-size:13px;margin-top:4px}
+
+  /* App grid - exactly 2 rows */
+  .apps {
+    background: linear-gradient(180deg, transparent, #00000010);
+    padding:18px;
+    border-radius:16px;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap:18px;
+    align-items:start;
+    justify-items:center;
+  }
+
+  /* Make tiles look like app icons (larger) */
+  .app {
+    width:140px;
+    height:170px;
+    background:var(--glass);
+    border-radius:18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding:12px;
+    box-shadow: 0 8px 20px rgba(2,6,23,0.5);
+    transition:transform .18s ease, box-shadow .18s;
+    text-decoration:none;color:inherit;
+    user-select:none;
+  }
+  .app:hover{transform:translateY(-6px);box-shadow:0 14px 34px rgba(2,6,23,0.6)}
+  .app img{width:88px;height:88px;border-radius:16px;object-fit:cover;margin-bottom:10px;box-shadow:0 6px 18px rgba(0,0,0,0.5)}
+  .app .title{font-size:15px;font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+
+  /* Force exactly two rows on larger screens */
+  @media(min-width:740px){
+    .apps{grid-template-rows:repeat(2, 1fr); grid-auto-flow:column; grid-auto-columns: 1fr; align-items:center}
+    .app{width:180px;height:190px}
+  }
+
+  /* Exit / back button */
+  .controls{display:flex;gap:10px;align-items:center}
+  footer{opacity:0.8;font-size:12px;text-align:center;margin-top:6px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" <img src="" alt="">>Logo</div>
+        <div>
+          <h1>Ilovalar markazi</h1>
+          <div class="subtitle">Sevimli ilovalaringiz — ikki qator va kattaroq ko'rinishda</div>
+        
+
+
+
+
+      </div>
+
+      <div class="controls">
+        <!-- prettier exit button -->
+
+    </header>
+
+    <main>
+      <div class="apps" id="appsGrid">
+        <!-- Tiles - keep same links / images as original project --><a class="app" href="calculator.html">
+  <img src="calculator.jpg" alt="Calc" />
+  <div class="title">🧮 Kalkulyator</div>
+</a>
+<a class="app" href="stopwatch.html">
+  <img src="Sekundomer.jpg" alt="Stopwatch" />
+  <div class="title">⏱ Sekundomer</div>
+</a>
+<a class="app" href="timer.html">
+  <img src="Taymer.jpg" alt="Taymer" />
+  <div class="title">⏳ Taymer</div>
+</a>
+        <a class="app" href="music-app.html">
+          <img src="1.jpg" alt="Music" />
+          <div class="title">🎵 Musiqa</div>
+        </a>
+
+        <a class="app" href="soat.html">
+          <img src="soat.jpg" alt="Soat" />
+          <div class="title">⏰ Soat</div>
+        </a>
+
+        <a class="app" href="translator.html">
+          <img src="translator.jpg" alt="Translator" />
+          <div class="title">🌐 Translator</div>
+        </a>
+
+        <a class="app" href="qaydnoma.html">
+          <img src="qaydnoma.jpg" alt="Qaydnoma" />
+          <div class="title">📝 Qaydnoma</div>
+        </a>
+
+        <a class="app" href="choose.html">
+          <img src="game.png" alt="O'yinlar" />
+          <div class="title">🎮 O'yinlar</div>
+        </a>
+
+      </div>
+    </main>
+
+    <footer>© Ilovalar markazi — dizayn yangilandi</footer>
+  </div>
+
+<style>
+#codesBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+#codesBtn:hover {
+  transform: scale(1.1);
+}
+#codesPanel {
+  position: fixed;
+  bottom: -120px;
+  right: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: bottom 0.4s ease;
+  display: flex;
+  gap: 10px;
+}
+#codesPanel.show {
+  bottom: 100px;
+}
+</style>
+
+<button id="codesBtn">⚙️</button>
+
+<div id="codesPanel">
+  <input type="text" id="siteInput" placeholder="Sayt nomini yozing (masalan: youtube)" style="padding:10px; width:200px; border-radius:8px; border:1px solid #ccc;">
+  <button onclick="openSite()" style="padding:10px 15px; border:none; background:#007BFF; color:white; border-radius:8px; cursor:pointer;">Enter</button>
+</div>
+
+<script>
+const btn = document.getElementById('codesBtn');
+const panel = document.getElementById('codesPanel');
+btn.addEventListener('click', () => {
+  panel.classList.toggle('show');
+});
+function openSite() {
+  var site = document.getElementById('siteInput').value.trim();
+  if (site) {
+    window.location.href = 'https://' + site + '.com';
+  }
+}
+</script>
+
+</body>
+</html>

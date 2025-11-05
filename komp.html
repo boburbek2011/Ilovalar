@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kompyuter uchun o'yinlar menyusi</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#071024,#001219);color:#e6eef8;margin:0;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+  header{padding:24px;text-align:center}
+  main{width:1100px;max-width:96%;display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+  .card{background:rgba(255,255,255,0.04);padding:16px;border-radius:12px;width:260px;cursor:pointer;text-align:center;border:1px solid rgba(255,255,255,0.03)}
+  .card img{width:100%;height:140px;object-fit:cover;border-radius:8px}
+  .card h3{margin:12px 0 6px}
+  .card p{margin:0;color:#bcd3ea;font-size:14px}
+  a{color:inherit;text-decoration:none}
+  footer{margin-top:24px;color:#9fb3cf;padding:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>💻 Kompyuter uchun o'yinlar</h1>
+  <p style="color:#9fb3cf">Pastdagi o'yinlardan birini tanlang — hammasi alohida sahifalarda ochiladi.</p>
+</header>
+<main>
+  <a class="card" href="car_pc.html">
+    <img src="player-car.png" alt="Car">
+    <h3>Car — Yo'lni boshqarish</h3>
+    <p>Chap/о'ng tugmalari bilan mashinani boshqaring. R - qayta boshlash.</p>
+  </a>
+
+
+  </a>
+
+  <a class="card" href="pixel_pc.html">
+    <img src="pixel art.png" alt="Pixel Art">
+    <h3>Pixel Art Editor</h3>
+    <p>Klaviatura bilan piksel chizing — Space bo'yash, C tozalash.</p>
+  </a>
+  <a class="card" href="https://rosebud.ai/p/9285d6e3-3e24-4669-ba6c-ebb7b52675fd">
+    <img src="Minecraft.png" alt="Minecraft">
+    <h3>Minecraft</h3>
+    <p>Narsa quring.</p>
+  </a>
+  <a class="card" href="https://allwebgames.com/">
+    <h3>Boshqa oʻyinlar</h3>
+    <p>Boshqa oʻyinlarni bizning web sahifamizda sinab koʻring.</p>
+  </a>
+</main>
+<footer>Orqaga: <a href="choose.html">Choose sahifasi</a></footer>
+
+<script>
+function showScores(){
+  const map = {
+    'car_pc.html':'car_highscore',
+    'neon_pc.html':'neon_highscore',
+    'pixel_pc.html':'pixel_saved_count',
+    'guess_pc.html':'guess_best'
+  };
+  document.querySelectorAll('a.card').forEach(a=>{
+    const href = a.getAttribute('href');
+    const key = map[href];
+    let val = localStorage.getItem(key);
+    if(!val) val = '-';
+    let el = a.querySelector('.hs');
+    if(!el){
+      el = document.createElement('div'); el.className='hs'; el.style.marginTop='8px'; el.style.color='#cde7ff'; a.appendChild(el);
+    }
+    el.textContent = 'High: '+val;
+  });
+}
+window.addEventListener('load', showScores);
+</script>
+
+</body>
+</html>

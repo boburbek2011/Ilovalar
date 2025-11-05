@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neon Dodger (PC)</title>
+<style>
+body{margin:0;font-family:Arial;background:#01020a;color:#e6eef8;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+header{padding:16px;text-align:center}
+.container{width:900px;max-width:96%;padding:12px}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.btn{background:#0b1220;color:#e6eef8;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+canvas{background:#001219;border-radius:8px;width:100%;height:auto;display:block}
+.status{margin-top:8px;color:#9fb3cf}
+</style>
+</head>
+<body>
+<header><h1>Neon Dodger — Kompyuter</h1><p style="color:#9fb3cf">WASD yoki Arrow bilan harakat. R — qayta boshlash. Esc — menyu.</p></header>
+<div class="container">
+  <div class="controls">
+    <div><button class="btn" id="back">⬅ Menyuga</button> <button class="btn" id="restart">🔄 Qayta</button></div>
+    <div class="status">Score: <span id="score">0</span> | High Score: <span id="high">0</span></div>
+  </div>
+  <canvas id="n" width="800" height="450"></canvas>
+</div>
+<script>
+const canvas = document.getElementById('n');
+const ctx = canvas.getContext('2d');
+let W=canvas.width,H=canvas.height;
+let player={x:W/2,y:H-30,r:12,spd:4};
+let obs=[],score=0,run=true;
+function loadScores(){ const hs = localStorage.getItem('neon_highscore'); if(hs) document.getElementById('high').textContent = hs; const last = localStorage.getItem('neon_lastscore'); if(last) document.getElementById('score').textContent = last; }
+function saveScores(){ const hs = parseInt(localStorage.getItem('neon_highscore')||'0',10); if(score>hs){ localStorage.setItem('neon_highscore', score); document.getElementById('high').textContent = score; } localStorage.setItem('neon_lastscore', score); }
+function reset(){ obs=[]; score=0; run=true; player.x=W/2; document.getElementById('score').textContent=score; loop(); }
+
+function loop(){
+  if(!run) return;
+  ctx.clearRect(0,0,W,H);
+  // bg
+  const g = ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,'#05061a'); g.addColorStop(1,'#001219');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  // player
+  ctx.beginPath(); ctx.fillStyle='rgba(124,58,237,0.9)'; ctx.shadowColor='rgba(124,58,237,0.8)'; ctx.shadowBlur=18; ctx.arc(player.x,player.y,player.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+  // spawn
+  if(Math.random()<0.03+Math.min(0.05,score*0.0006)) obs.push({x:Math.random()*W,y:-40,w:20+Math.random()*60,h:30,spd:2+Math.random()*2,color:`hsl(${Math.random()*360} 80% 60%)`});
+  // draw
+  for(let o of obs){ o.y += o.spd + score*0.01; ctx.fillStyle=o.color; ctx.fillRect(o.x,o.y,o.w,o.h); }
+  // cleanup & collision
+  obs = obs.filter(o=>{
+    if(o.y>H){ score++; document.getElementById('score').textContent=score; return false; }
+    const dx = (o.x+o.w/2)-player.x; const dy = (o.y+o.h/2)-player.y;
+    if(Math.hypot(dx,dy) < player.r+20){ run=false; saveScores(); ctx.fillStyle='rgba(0,0,0,0.6)'; ctx.fillRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.font='20px Arial'; ctx.fillText('Game Over - R to restart', W/2-120, H/2); return false; }
+    return true;
+  });
+  requestAnimationFrame(loop);
+}
+let keys={};
+document.addEventListener('keydown', e=>{ keys[e.key]=true; if(e.key==='r' || e.key==='R') loadScores(); reset(); window.addEventListener('beforeunload', ()=> saveScores()); if(e.key==='Escape') location.href='komp.html'; if(current==='neon'){ if(e.key==='ArrowLeft'||e.key==='a') player.x -= player.spd; if(e.key==='ArrowRight'||e.key==='d') player.x += player.spd; if(e.key==='ArrowUp'||e.key==='w') player.y -= player.spd; if(e.key==='ArrowDown'||e.key==='s') player.y += player.spd; player.x = Math.max(10, Math.min(W-10, player.x)); player.y = Math.max(10, Math.min(H-10, player.y)); } });
+document.addEventListener('keyup', e=>{ keys[e.key]=false; });
+const back = document.getElementById('back'); const restart = document.getElementById('restart');
+back.addEventListener('click', ()=>{ saveScores(); location.href='komp.html'; });
+restart.addEventListener('click', ()=>{ saveScores(); loadScores(); reset(); window.addEventListener('beforeunload', ()=> saveScores()); });
+let current = 'neon';
+loadScores(); reset(); window.addEventListener('beforeunload', ()=> saveScores());
+</script>
+</body>
+</html>
